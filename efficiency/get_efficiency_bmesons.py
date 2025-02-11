@@ -10,8 +10,8 @@ import argparse
 import yaml
 import ctypes
 import sys
+import uproot
 sys.path.append('Utils')
-from DfUtils import read_parquet_in_batches
 from AnalysisUtils import evaluate_efficiency_from_histos
 from style_formatter import root_colors_from_matplotlib_colormap
 
@@ -91,6 +91,8 @@ def draw_efficiency_figure(particle, h_eff, h_eff_trigger, h_acc, out_file_name_
         decayChannel = 'B^{+}#rightarrow#bar{D}^{#font[122]{0}}#pi^{+}#rightarrow #pi^{#font[122]{-}}K^{+}#pi^{+}'
     if particle == "B0":
         decayChannel = 'B^{0}#rightarrow D^{#font[122]{-}}#pi^{+}#rightarrow #pi^{#font[122]{-}}K^{+}#pi^{#font[122]{-}}#pi^{+}'
+    if particle == "Bs":
+        decayChannel = 'B^{0}_{s}#rightarrow D^{#font[122]{-}}_{s}#pi^{+}#rightarrow K^{#font[122]{-}}K^{+}#pi^{#font[122]{-}}#pi^{+}'
     
     text_decay = ROOT.TLatex(0.51, 0.36, decayChannel)
     text_decay.SetNDC()
@@ -158,34 +160,32 @@ def compute_efficiency(config_file_name):
         in_file = ROOT.TFile.Open(in_file_name)
         h_sparse_gen = in_file.Get(config['gen']['sparse_name'])
         h_sparse_gen_in_acc = in_file.Get(config['gen']['sparse_name_acc'])
+        h_sparse_reco_trigger = in_file.Get(config['reco']['sparse_name'])
         if i_file == 0:
             h_gen = h_sparse_gen.Projection(config['gen']['pt_axis'])
             h_gen.SetDirectory(0)
             h_gen_in_acc = h_sparse_gen_in_acc.Projection(config['gen']['pt_axis'])
             h_gen_in_acc.SetDirectory(0)
+            h_reco_trigger = h_sparse_reco_trigger.Projection(config['reco']['pt_axis'])
+            h_reco_trigger.SetDirectory(0)
         else:
             h_gen.Add(h_sparse_gen.Projection(config['gen']['pt_axis']))
             h_gen_in_acc.Add(h_sparse_gen_in_acc.Projection(config['gen']['pt_axis']))
+            h_sparse_reco_trigger.Add(h_sparse_reco_trigger.Projection(config['reco']['pt_axis']))
         in_file.Close()
 
     h_gen.SetName('h_gen')
     h_gen_in_acc.SetName('h_gen_in_acc')
+    h_reco_trigger.SetName('h_reco_trigger')
     h_reco = h_gen.Clone('h_reco')
     h_reco.Reset()
-    h_reco_trigger = h_reco.Clone('h_reco_trigger')
-    h_reco_trigger.Reset()
-
 
     for i_pt, (pt_min, pt_max) in enumerate(zip(pt_mins, pt_maxs)):
 
         # Apply the cuts on the reconstructed particles
         require_signal = "(fFlagMcMatchRec == -1 or fFlagMcMatchRec == 1)"
-        df_reco = pd.concat(
-            [read_parquet_in_batches(parquet, f"{pt_min} < fPt < {pt_max} and {require_signal}")
-             for parquet in config['reco_file_names']])
-
-        for pt in df_reco['fPt']:
-            h_reco_trigger.Fill(pt)     
+        df_reco = uproot.open(config['reco_file_names']).arrays(library='pd')
+        df_reco = df_reco.query(f"{pt_min} < fPt < {pt_max} and {require_signal}")
 
         sel_to_apply = ''
         for cut_var in cut_set:
@@ -194,7 +194,8 @@ def compute_efficiency(config_file_name):
             sel_to_apply += f" {cut_set[cut_var]['mins'][i_pt]} < {cut_var} < {cut_set[cut_var]['maxs'][i_pt]} and"
         sel_to_apply = sel_to_apply[:-3] # Remove the last 'and'
 
-        df_reco = df_reco.query(sel_to_apply)
+        if sel_to_apply != '':
+            df_reco = df_reco.query(sel_to_apply)
         for pt in df_reco['fPt']:
             h_reco.Fill(pt)
 

@@ -22,6 +22,7 @@ def main(config_file_name):
     analysis_results_files = config['lumi']['analysis_results_files']
     n_events = get_n_events_from_zorro(analysis_results_files, config['lumi']['zorro_folder'], config['lumi']['triggers_of_interest'], config['lumi']['h_collisions_path'])
     int_lumi = n_events/config['lumi']['tvx_cross_section']
+    print(f'{n_events:2e}', int_lumi)
 
     br_b_to_d = config['br']['b0_todminuspi']
     br_d_to_pikpi = config['br']['dplus_tokpipi']

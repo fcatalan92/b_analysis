@@ -1,14 +1,17 @@
-particle: 'B0'
+particle: 'Bs'
 
-reco_file_names: ['ML/Application/pt2_6/MC_pT_2_6_ModelApplied.parquet.gzip',
-            'ML/Application/pt6_100/MC_pT_6_100_ModelApplied.parquet.gzip'] # List of parquet files with the ML score
+reco_file_names: '~/Desktop/Analyses/Bs_Run3/local_workflow_output/LHC23c1_train308487/linear_sel/AO2D_merged.root:DF_2835056186000/O2hfredcandbslite'
 
 gen:
-  file_names: ['derived_data_analysis/AnalysisResultsTask_LHC23c1_TrackTunerPtSmear1p5.root']
-  sparse_name: 'hf-task-b0-reduced/hPtYGenSig'
-  sparse_name_acc: 'hf-task-b0-reduced/hPtYWithProngsInAccepanceGenSig'
+  file_names: ['~/Desktop/Analyses/Bs_Run3/local_workflow_output/LHC23c1_train308487/trigger_sel/AnalysisResults.root']
+  sparse_name: 'hf-task-bs-reduced/hPtYGenSig'
+  sparse_name_acc: 'hf-task-bs-reduced/hPtYWithProngsInAccepanceGenSig'
   pt_axis: 0
+
+reco:
+  sparse_name: 'hf-task-bs-reduced/hMassPtCutVarsRecSig'
+  pt_axis: 1
 
 cutset_file_name: 'config/cutset.yaml'
 
-output_file_name: 'efficiency/efficiency.root'
+output_file_name: '~/Desktop/Analyses/Bs_Run3/local_workflow_output/LHC23c1_train308487/linear_sel/efficiency.root'

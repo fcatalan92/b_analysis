@@ -1,10 +1,8 @@
-particle: "B0"
+particle: "Bs"
 
 inputs:
-  data: [../inputs/pt2_6/Data_pT_2_6_ModelApplied.parquet.gzip,
-         ../inputs/pt6_100/Data_pT_6_100_ModelApplied.parquet.gzip]
-  mc: [../inputs/pt2_6/MCwBkg_pT_2_6_ModelApplied.parquet.gzip,
-       ../inputs/pt6_100/MCwBkg_pT_6_100_ModelApplied.parquet.gzip]
+  data: "/home/fcatalan/Desktop/Analyses/Bs_Run3/local_workflow_output/LHC23_pass4_LHC24_pass1_merged/linear_sel/AO2D_merged.root:DF_2298103932356800/O2hfredcandbslite"
+  mc: "/home/fcatalan/Desktop/Analyses/Bs_Run3/local_workflow_output/LHC24i_3_4_merged/linear_sel/AO2D_merged.root:DF_2298103923608000/O2hfredcandbslite"
 
 cutset_file_name: '../config/cutset.yaml'
 
@@ -13,20 +11,20 @@ fit_configs:
     activate: true
     signal_funcs: ["gaussian"]
     bkg_funcs: ["expo"]
-    mass_limits: [5.00, 5.56]
+    mass_limits: [5.00, 5.75]
     use_bkg_templ: true
   # below one per pT bin
-  signal_funcs: [["gaussian"], ["gaussian"], ["gaussian"], ["gaussian"], ["gaussian"]]
-  bkg_funcs: [["expo"], ["expo"], ["expo"], ["expo"], ["expo"]]
-  mass_limits: [[5.00, 5.56], [5.00, 5.56], [5.00, 5.56], [5.00, 5.56], [5.00, 5.56]]
-  use_bkg_templ: [true, true, true, true, true]
+  signal_funcs: [["gaussian"]]
+  bkg_funcs: [["expo"]]
+  mass_limits: [[5.00, 5.75]]
+  use_bkg_templ: [true]
 
 plot_style:
   pt_int:
-    n_bins: 56
-  n_bins: [23, 23, 23, 23, 23]
+    n_bins: 75
+  n_bins: [75]
 
 outputs:
-  directory: "."
+  directory: "/home/fcatalan/Desktop/Analyses/Bs_Run3/local_workflow_output/LHC23_pass4_LHC24_pass1_merged/linear_sel/fit_pt2_100"
   suffix: ""
 

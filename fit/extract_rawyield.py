@@ -108,30 +108,29 @@ def fit(config_file): # pylint: disable=too-many-locals,too-many-statements
         decay_channel = r"D^{-} \pi^{\plus}"
         particleName = "B^{0}"
         fFlagMcMatchRec = 8 # prd = partly reco decays
+    if particle == "Bs":
+        pdgId = 531
+        decay_channel = r"D_{s}^{-} \pi^{\plus}"
+        particleName = "B_{s}^{0}"
+        fFlagMcMatchRec = 16 # prd = partly reco decays
 
     pt_mins = cut_set["pt"]["mins"]
     pt_maxs = cut_set["pt"]["maxs"]
     pt_lims = pt_mins.copy()
     pt_lims.append(pt_maxs[-1])
-    bdt_cut_mins = cut_set["ML_output"]["mins"]
-    bdt_cut_maxs = cut_set["ML_output"]["maxs"]
     selection_string = ""
-    for ipt, (pt_min, pt_max, bdt_cut_min, bdt_cut_max) in enumerate(zip(pt_mins, pt_maxs, bdt_cut_mins, bdt_cut_maxs)):
+    for ipt, (pt_min, pt_max) in enumerate(zip(pt_mins, pt_maxs)):
         if ipt == 0:
-            selection_string += f"({pt_min} < fPt < {pt_max} and {bdt_cut_min} < ML_output < {bdt_cut_max})"
+            selection_string += f"({pt_min} < fPt < {pt_max})"
         else:
-            selection_string += f" or ({pt_min} < fPt < {pt_max} and {bdt_cut_min} < ML_output < {bdt_cut_max})"
+            selection_string += f" or ({pt_min} < fPt < {pt_max})"
 
     # load data
-    df = pd.DataFrame()
-    for file in cfg["inputs"]["data"]:
-        df = pd.concat([df, pd.read_parquet(file)])
+    df = uproot.open(cfg["inputs"]["data"]).arrays(library='pd')
     df.query(selection_string, inplace=True)
 
     # load mc
-    df_mc = pd.DataFrame()
-    for file in cfg["inputs"]["mc"]:
-        df_mc = pd.concat([df_mc, pd.read_parquet(file)])
+    df_mc = uproot.open(cfg["inputs"]["mc"]).arrays(library='pd')
     df_mc.query(selection_string, inplace=True)
 
     df_mc_prd_bkg = df_mc.query(f"fFlagMcMatchRec == {fFlagMcMatchRec}")  # prd = partly reco decays

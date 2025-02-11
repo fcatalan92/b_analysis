@@ -3,8 +3,7 @@ efficiency_file: efficiency/efficiency.root
 output_file: cross_section/cross_section.root
 
 lumi:
-  analysis_results_files: ['inputs/data/AnalysisResults_LHC23_pass4_skimmed.root',
-                          'inputs/data/AnalysisResults_LHC24_pass1_skimmed.root']
+  analysis_results_files: ['/home/fcatalan/Desktop/Analyses/Bs_Run3/input/reduced_data/LHC23_pass4_LHC24_pass1_merged/AnalysisResults.root']
   zorro_folder: 'hf-data-creator-charm-had-pi-reduced/Zorro'
   triggers_of_interest: ['fHfBeauty4P']
   h_collisions_path: 'hf-candidate-creator-3prong/hCollisions'
