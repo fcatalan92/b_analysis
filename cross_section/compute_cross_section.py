@@ -45,6 +45,7 @@ def main(config_file_name):
     
     else:
         int_lumi_after_bc = int_lumi_before_bc * config['lumi']['lumi_after_bc_cuts'] / config['lumi']['lumi_before_bc_cuts']
+    print(f'{n_events:2e}', int_lumi_after_bc)
 
     br_b_to_d = config['br']['b0_todminuspi']
     br_d_to_pikpi = config['br']['dplus_tokpipi']
