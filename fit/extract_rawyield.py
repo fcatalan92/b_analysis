@@ -119,6 +119,11 @@ def fit(config_file): # pylint: disable=too-many-locals,too-many-statements, too
         decay_channel = r"D^{-} \pi^{\plus}"
         particle_name = "B^{0}"
         flag_mc_match_rec = 8 # prd = partly reco decays
+    if particle == "Bs":
+        pdgId = 531
+        decay_channel = r"D_{s}^{-} \pi^{\plus}"
+        particleName = "B_{s}^{0}"
+        fFlagMcMatchRec = 16 # prd = partly reco decays
 
     pt_mins = cut_set["pt"]["mins"]
     pt_maxs = cut_set["pt"]["maxs"]

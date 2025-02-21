@@ -95,6 +95,9 @@ def draw_efficiency_figure(particle, h_eff, h_eff_trigger, h_acc, out_file_name_
     if particle == "B0":
         decay_channel = 'B^{0}#rightarrow D^{#font[122]{-}}#pi^{+}\
             #rightarrow #pi^{#font[122]{-}}K^{+}#pi^{#font[122]{-}}#pi^{+}'
+    if particle == "Bs":
+        decayChannel = 'B^{0}_{s}#rightarrow D^{#font[122]{-}}_{s}#pi^{+}\
+            #rightarrow K^{#font[122]{-}}K^{+}#pi^{#font[122]{-}}#pi^{+}'
 
     text_decay = ROOT.TLatex(0.51, 0.36, decay_channel)
     text_decay.SetNDC()
