@@ -329,7 +329,7 @@ class MlTraining(MlCommon):
         - out_dir: output directory
         """
 
-        model_clf = xgb.XGBClassifier(use_label_encoder=False)
+        model_clf = xgb.XGBClassifier()
         model_hdl = ModelHandler(model_clf, self.training_vars, hyper_pars)
 
         # hyperparams optimization
