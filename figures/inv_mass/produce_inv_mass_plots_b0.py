@@ -88,7 +88,7 @@ def plot(infile_name, colors, version, pt_min=None, pt_max=None):
 
     """
     ROOT.gStyle.SetPadRightMargin(0.035)
-    ROOT.gStyle.SetPadTopMargin(0.035)
+    ROOT.gStyle.SetPadTopMargin(0.065)
     ROOT.gStyle.SetPadLeftMargin(0.12)
     ROOT.gStyle.SetPadBottomMargin(0.12)
     ROOT.gStyle.SetOptStat(0)
@@ -229,16 +229,16 @@ def plot(infile_name, colors, version, pt_min=None, pt_max=None):
         func_totfunc.Draw("lsame")
         hist_signal.DrawCopy("histsame")
         func_signal.Draw("lsame")
-    lat.DrawLatex(0.54, 0.88, "ALICE Performance")
-    lat_small.DrawLatex(0.42, 0.82,
+    lat.DrawLatex(0.57, 0.85, "ALICE Preliminary")
+    lat_small.DrawLatex(0.416, 0.79,
                         "pp,#kern[0.04]{#sqrt{#it{s}} = 13.6 TeV},#kern[0.09]{#font[132]{#it{L}}_{int} = 43 pb^{#minus1}}")
 
     if pt_min is None and pt_max is None:
-        lat_small.DrawLatex(0.56, 0.76, "1 < #kern[-0.3]{#it{p}_{T}} < 23.5 GeV/#it{c}")
+        lat_small.DrawLatex(0.60, 0.73, "1 < #kern[-0.3]{#it{p}_{T}} < 23.5 GeV/#it{c}")
     elif pt_min==2 and pt_max==4:
-        lat_small.DrawLatex(0.60, 0.76, f"{pt_min} < #it{{p}}_{{T}} < {pt_max} GeV/#it{{c}}")
+        lat_small.DrawLatex(0.64, 0.73, f"{pt_min} < #it{{p}}_{{T}} < {pt_max} GeV/#it{{c}}")
     elif pt_min==10 and pt_max==14:
-        lat_small.DrawLatex(0.56, 0.76, f"{pt_min} < #it{{p}}_{{T}} < {pt_max} GeV/#it{{c}}")
+        lat_small.DrawLatex(0.60, 0.73, f"{pt_min} < #it{{p}}_{{T}} < {pt_max} GeV/#it{{c}}")
     leg.Draw()
     leg2.Draw()
     leg_corr.Draw()
